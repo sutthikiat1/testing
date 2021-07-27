@@ -6,12 +6,15 @@ export const fetchContactDetailsStart = () => ({
   type: FETCH_CONTACT_DETAILS__START,
 });
 
-export const fetchContactDetailsSuccess = ({ contactDetails }) => ({
-  type: FETCH_CONTACT_DETAILS__SUCCESS,
-  payload: {
-    contactDetails,
-  },
-});
+export const fetchContactDetailsSuccess = ({ contactDetails }) => (
+  console.log(" :: fetchContactDetailsSuccess :;", contactDetails),
+  {
+    type: FETCH_CONTACT_DETAILS__SUCCESS,
+    payload: {
+      contactDetails,
+    },
+  }
+);
 
 export const fetchContactDetailsFailure = () => ({
   type: FETCH_CONTACT_DETAILS__FAILURE,

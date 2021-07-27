@@ -15,7 +15,6 @@ const reducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-
     case UPDATE_SEARCH_PHRASE__START:
       return {
         ...state,
@@ -46,7 +45,6 @@ const reducer = (state = initialState, action) => {
 
     default:
       return state;
-
   }
 };
 

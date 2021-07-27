@@ -11,19 +11,20 @@ import SearchFailure from "./SearchFailure";
 import "./SearchContacts.css";
 
 class SearchContacts extends React.Component {
-
   static propTypes = {
     phrase: PropTypes.string.isRequired,
     onPhraseChange: PropTypes.func.isRequired,
-    matchingContacts: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
-    })).isRequired,
+    matchingContacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+      })
+    ).isRequired,
     onMatchingContactSelect: PropTypes.func.isRequired,
     hasFailedToSearch: PropTypes.bool.isRequired,
   };
 
-  render () {
+  render() {
     const {
       phrase,
       onPhraseChange,
@@ -35,31 +36,30 @@ class SearchContacts extends React.Component {
     return (
       <section className="SearchContacts">
         <Downshift
-          itemToString={item => (item ? item.value : "")}
-          onChange={item => onMatchingContactSelect(item)}
+          itemToString={(item) => (item ? item.value : "")}
+          onChange={(item) => onMatchingContactSelect(item)}
         >
           {({
-              isOpen,
-              highlightedIndex,
-              getInputProps,
-              getMenuProps,
-              getItemProps,
-            }) => (
+            isOpen,
+            highlightedIndex,
+            getInputProps,
+            getMenuProps,
+            getItemProps,
+          }) => (
             <div>
               <PhraseInput
                 phrase={phrase}
                 onPhraseChange={onPhraseChange}
                 downshiftGetInputProps={getInputProps}
               />
-              {
-                isOpen && (
-                  <MatchingContacts
-                    data={matchingContacts}
-                    highlightedIndex={highlightedIndex}
-                    downshiftGetMenuProps={getMenuProps}
-                    downshiftGetItemProps={getItemProps}
-                  />
-                )}
+              {isOpen && (
+                <MatchingContacts
+                  data={matchingContacts}
+                  highlightedIndex={highlightedIndex}
+                  downshiftGetMenuProps={getMenuProps}
+                  downshiftGetItemProps={getItemProps}
+                />
+              )}
             </div>
           )}
         </Downshift>
@@ -69,24 +69,24 @@ class SearchContacts extends React.Component {
       </section>
     );
   }
-
 }
 
-const mapReduxStateToProps = state => ({
+const mapReduxStateToProps = (state) => ({
   phrase: state.addressBook.search.phrase,
   matchingContacts: state.addressBook.search.matchingContacts,
   hasFailedToSearch: state.addressBook.search.searchFailure,
 });
 
-const mapReduxDispatchToProps = dispatch => ({
-  onPhraseChange:
-    (newPhrase) => dispatch(updateSearchPhrase(newPhrase)),
+const mapReduxDispatchToProps = (dispatch) => ({
+  onPhraseChange: (newPhrase) => dispatch(updateSearchPhrase(newPhrase)),
   // TODO something is wrong here
-  onMatchingContactSelect:
-    (selectedMatchingContact) => dispatch(updateSearchPhrase(selectedMatchingContact.value)),
+  onMatchingContactSelect: (selectedMatchingContact) => {
+    dispatch(updateSearchPhrase(selectedMatchingContact.value));
+    dispatch(selectMatchingContact(selectedMatchingContact.id));
+  },
 });
 
 export default connect(
   mapReduxStateToProps,
-  mapReduxDispatchToProps,
+  mapReduxDispatchToProps
 )(SearchContacts);
